@@ -15,7 +15,7 @@ jobs:
     
     services:
       postgres:
-        image: postgis/postgis:17-3.5
+        image: postgis/postgis:18-3.6
         env:
           POSTGRES_DB: fleet_pulse_test
           POSTGRES_USER: admin
