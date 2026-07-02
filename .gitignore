@@ -1,0 +1,31 @@
+# ---  OS / IDE ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.iws
+.gradle/
+.project
+.settings/
+.classpath
+
+# --- Backend (Java / Spring / Gradle) ---
+backend/build/
+backend/.gradle/
+backend/bin/
+backend/out/
+backend/*.log
+backend/*.jar
+backend/*.war
+
+# --- Frontend (Vue / Vite / Node) ---
+frontend/node_modules/
+frontend/dist/
+frontend/dist-ssr/
+frontend/*.local
+frontend/.vite/
+
+# --- Docker & Remainings ---
+docker-compose.override.yml
+.env
