@@ -1,7 +1,6 @@
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/fleet_pulse_test
-    username: ${DB_USER}
-    password: ${DB_PASSWORD}
-  config:
-    import: ""
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
