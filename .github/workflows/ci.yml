@@ -9,17 +9,17 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: backend
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
     
     services:
       postgres:
         image: postgis/postgis:18-3.6
         env:
           POSTGRES_DB: fleet_pulse_test
-          POSTGRES_USER: admin
-          POSTGRES_PASSWORD: securepassword
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
           - 5432:5432
         options: >-
@@ -40,7 +40,8 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+        run: chmod +x backend/gradlew
 
       - name: Build and Test with Gradle
         run: ./gradlew build
+        working-directory: backend
