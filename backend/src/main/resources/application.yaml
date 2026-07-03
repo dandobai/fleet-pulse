@@ -1,0 +1,9 @@
+spring:
+  config:
+    import: "optional:file:../.env[.properties]"
+  application:
+    name: fleet-pulse-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5432/fleet_pulse_db
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
