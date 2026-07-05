@@ -24,7 +24,6 @@ onMounted(() => {
   console.log("Térkép központja:", map.getCenter());
 });
 
-// Reagálás a store változására
 watch(() => store.vehicles, (newVehicles) => {
   console.log("Store frissült, járművek száma:", newVehicles.size);
   newVehicles.forEach((vehicle) => {
