@@ -1,4 +1,4 @@
-package hu.fleetpulse.backend;
+package hu.fleetpulse.backend.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
