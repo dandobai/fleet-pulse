@@ -22,6 +22,7 @@ class FleetPulseBackendApplicationTests {
         registry.add("spring.datasource.url", postgres::getJdbcUrl);
         registry.add("spring.datasource.username", postgres::getUsername);
         registry.add("spring.datasource.password", postgres::getPassword);
+        registry.add("app.cors.allowed-origins", () -> "http://localhost:3000");
     }
 
 	@Test

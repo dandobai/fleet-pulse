@@ -4,6 +4,28 @@ spring:
   application:
     name: fleet-pulse-backend
   datasource:
-    url: jdbc:postgresql://localhost:5432/fleet_pulse_db
+    url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      idle-timeout: 30000
+      connection-timeout: 20000
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          batch_size: 20
+        format_sql: true
+app:
+  cors:
+    allowed-origins: ${FRONTEND_URL}
+logging:
+  level:
+    root: INFO
+    hu.fleetpulse.backend: INFO
