@@ -11,15 +11,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -27,6 +24,7 @@ import java.util.UUID;
 @RequestMapping("/api/v1/history")
 @RequiredArgsConstructor
 @Validated
+@Slf4j
 @Tag(name = "Position History", description = "Járművek korábbi pozícióinak lekérdezése")
 public class PositionHistoryController {
 
@@ -50,8 +48,7 @@ public class PositionHistoryController {
     public ResponseEntity<PositionHistoryListResponse> findAllByVehicleId(
             @Parameter(description = "A jármű egyedi UUID azonosítója", required = true)
             @PathVariable @NotNull UUID vehicleId) {
-
-        var positionHistoryDTOs = service.findAllByVehicleId(vehicleId).stream().map(mapper::toDto).toList();
+        var positionHistoryDTOs = service.findByVehicleId(vehicleId).stream().map(mapper::toDto).toList();
         var response = new PositionHistoryListResponse(positionHistoryDTOs);
         return ResponseEntity.ok(response);
     }
