@@ -1,41 +1,42 @@
 import { onMounted, onUnmounted } from 'vue';
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+import { fleetSocketService } from '@/services/fleetSocketService';
 import { useVehicleStore } from '@/stores/vehicleStore';
+import { useNotificationStore } from '@/stores/notificationStore';
 
 export function useFleetSocket() {
-  const store = useVehicleStore();
-  let stompClient: Stomp.Client | null = null;
+  const vehicleStore = useVehicleStore();
+  const notificationStore = useNotificationStore();
 
-  const connect = () => {
-    const socket = new SockJS('http://localhost:8080/ws-fleet');
-    stompClient = Stomp.over(socket);
-
-    stompClient.connect({}, () => {
-      console.log('Connected to FleetPulse WebSocket');
-
-      stompClient?.subscribe('/topic/vehicles/', (message) => {
-        const wrapper = JSON.parse(message.body);
-
-        if (wrapper.type === 'LIVE_UPDATE') {
-          const e = wrapper.data;
-
-          console.log("Adat kibontva:", e);
-
-          store.updateVehicle({
-            id: e.vehicleId,
-            lat: e.latitude,
-            lng: e.longitude,
-            timestamp: new Date().toISOString()
-          });
-        }
-      });
+  const handleVehicleUpdate = (payload: any) => {
+    const data = payload.data;
+    
+    vehicleStore.updateVehicle({
+      id: data.vehicleId,
+      lat: data.latitude,
+      lng: data.longitude,
+      timestamp: new Date().toISOString()
     });
   };
 
-  onMounted(() => connect());
+  onMounted(() => {
+    fleetSocketService.connect();
+
+    const checkConnection = setInterval(() => {
+      if (fleetSocketService.isConnected) {
+        clearInterval(checkConnection);
+        
+        fleetSocketService.subscribeToTopic('/topic/vehicles/', handleVehicleUpdate);
+        
+        fleetSocketService.subscribeToTopic('/topic/notification/', (payload) => {
+          notificationStore.addNotification(payload.data);
+        });
+        
+        console.log("WebSocket feliratkozások aktívak.");
+      }
+    }, 100);
+  });
 
   onUnmounted(() => {
-    if (stompClient) stompClient.disconnect(() => console.log('Disconnected'));
+    fleetSocketService.disconnect();
   });
 }
