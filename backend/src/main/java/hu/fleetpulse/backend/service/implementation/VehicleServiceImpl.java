@@ -8,6 +8,7 @@ import hu.fleetpulse.backend.exception.VehicleNotFoundException;
 import hu.fleetpulse.backend.model.entity.Vehicle;
 import hu.fleetpulse.backend.model.value.GeoLocation;
 import hu.fleetpulse.backend.repository.VehicleRepository;
+import hu.fleetpulse.backend.service.PositionHistoryService;
 import hu.fleetpulse.backend.service.VehicleService;
 import hu.fleetpulse.backend.validator.GeoValidator;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class VehicleServiceImpl implements VehicleService {
     private final ApplicationEventPublisher eventPublisher;
     private final PositionConverter positionConverter;
     private final GeoValidator geoValidator;
+    private final PositionHistoryService positionHistoryService;
+
 
     @Override
     @Transactional
@@ -52,6 +55,7 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setPosition(newPosition);
 
         vehicleRepository.save(vehicle);
+        positionHistoryService.create(id,request.latitude(),request.longitude());
         log.info("Position updated for vehicle {}: [{}, {}]", id, request.latitude(), request.longitude());
         eventPublisher.publishEvent(new VehicleMovedEvent(id, request.latitude(), request.longitude()));
     }

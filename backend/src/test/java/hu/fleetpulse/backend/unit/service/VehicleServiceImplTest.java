@@ -8,6 +8,7 @@ import hu.fleetpulse.backend.exception.VehicleNotFoundException;
 import hu.fleetpulse.backend.model.entity.Vehicle;
 import hu.fleetpulse.backend.model.value.GeoLocation;
 import hu.fleetpulse.backend.repository.VehicleRepository;
+import hu.fleetpulse.backend.service.PositionHistoryService;
 import hu.fleetpulse.backend.service.implementation.VehicleServiceImpl;
 import hu.fleetpulse.backend.validator.GeoValidator;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,9 @@ class VehicleServiceImplTest {
 
     @Mock
     private VehicleRepository vehicleRepository;
+
+    @Mock
+    private PositionHistoryService positionHistoryService;
 
     @Mock
     private ApplicationEventPublisher eventPublisher;
