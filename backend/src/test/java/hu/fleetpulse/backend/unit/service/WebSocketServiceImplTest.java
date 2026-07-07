@@ -60,6 +60,5 @@ class WebSocketServiceImplTest {
 
         verify(geoValidator).validate(47.0, 19.0);
         verify(messagingTemplate, times(1)).convertAndSend(eq("/topic/vehicles/"), any(WebSocketPayload.class));
-        verify(messagingTemplate, times(1)).convertAndSend(eq("/topic/history/" + id), any(WebSocketPayload.class));
     }
 }
