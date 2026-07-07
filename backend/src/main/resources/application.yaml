@@ -28,4 +28,6 @@ app:
 logging:
   level:
     root: INFO
-    hu.fleetpulse.backend: INFO
+    hu.fleetpulse.backend: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
