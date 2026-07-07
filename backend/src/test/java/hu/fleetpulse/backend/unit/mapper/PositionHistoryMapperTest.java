@@ -1,7 +1,7 @@
 package hu.fleetpulse.backend.unit.mapper;
 
 import hu.fleetpulse.backend.converter.PositionConverter;
-import hu.fleetpulse.backend.dto.response.PositionHistoryDTO; // Feltételeztem a DTO nevét
+import hu.fleetpulse.backend.dto.response.PositionHistoryDTO;
 import hu.fleetpulse.backend.mapper.PositionHistoryMapper;
 import hu.fleetpulse.backend.model.entity.PositionHistory;
 import hu.fleetpulse.backend.model.value.GeoLocation;
@@ -16,38 +16,41 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PositionHistoryMapperTest {
 
-    private final GeometryFactory geometryFactory = new GeometryFactory();
-    private final PositionConverter positionConverter = new PositionConverter(geometryFactory);
     private final PositionHistoryMapper mapper = Mappers.getMapper(PositionHistoryMapper.class);
+    private final PositionConverter converter = new PositionConverter(new GeometryFactory());
 
     @Test
-    void shouldMapToDto() {
-        // 1. Arrange - Felkészülés az adatokkal
-        UUID entityId = UUID.randomUUID();
-        UUID vehicleId = UUID.randomUUID();
-        GeoLocation geoLocation = new GeoLocation(19.0, 47.0); // lon, lat
-        LocalDateTime now = LocalDateTime.now();
+    void toDto_ShouldMapAllFieldsCorrectly() {
+        GeoLocation geoLocation = new GeoLocation(19.0, 47.0);
+        PositionHistory entity = createBaseEntityBuilder().position(converter.toPoint(geoLocation)).build();
 
-        PositionHistory entity = PositionHistory.builder()
-                .id(entityId)
-                .vehicleId(vehicleId)
-                .position(positionConverter.toPoint(geoLocation))
-                .timestamp(now)
-                .build();
-
-        // 2. Act - Mapping végrehajtása
         PositionHistoryDTO dto = mapper.toDto(entity);
 
-        // 3. Assert - Minden mező ellenőrzése
-        assertNotNull(dto, "A DTO nem lehet null");
-        assertEquals(entity.getId(), dto.id(), "Az ID-nak egyeznie kell");
-        assertEquals(entity.getVehicleId(), dto.vehicleId(), "A vehicleId-nak egyeznie kell");
-        assertEquals(entity.getTimestamp(), dto.timestamp(), "A timestamp-nek egyeznie kell");
-
-        // Ellenőrizzük a koordinátákat is, ha a DTO-ban is GeoLocation van
-        assertNotNull(dto.latitude(), "A pozíció nem lehet null");
-        assertNotNull(dto.longitude(), "A pozíció nem lehet null");
+        assertNotNull(dto);
+        assertEquals(entity.getId(), dto.id());
+        assertEquals(entity.getVehicleId(), dto.vehicleId());
+        assertEquals(entity.getTimestamp(), dto.timestamp());
         assertEquals(geoLocation.latitude(), dto.latitude());
         assertEquals(geoLocation.longitude(), dto.longitude());
+    }
+
+    @Test
+    void toDto_WhenEntityIsNull_ReturnsNull() {
+        assertNull(mapper.toDto(null));
+    }
+
+    @Test
+    void toDto_WhenPositionIsNull_SetsCoordinatesToNull() {
+        PositionHistory entity = createBaseEntityBuilder().position(null).build();
+
+        PositionHistoryDTO dto = mapper.toDto(entity);
+
+        assertNotNull(dto);
+        assertNull(dto.latitude());
+        assertNull(dto.longitude());
+    }
+
+    private PositionHistory.PositionHistoryBuilder createBaseEntityBuilder() {
+        return PositionHistory.builder().id(UUID.randomUUID()).vehicleId(UUID.randomUUID()).timestamp(LocalDateTime.now());
     }
 }

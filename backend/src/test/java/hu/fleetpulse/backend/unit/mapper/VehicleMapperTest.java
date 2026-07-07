@@ -19,30 +19,31 @@ class VehicleMapperTest {
     private final GeometryFactory geometryFactory = new GeometryFactory();
 
     @Test
-    void shouldMapToDto() {
-        UUID id = UUID.randomUUID();
+    void toDto_ShouldMapAllFieldsCorrectly() {
         double lat = 47.4979;
         double lon = 19.0402;
-
         Point position = geometryFactory.createPoint(new Coordinate(lon, lat));
 
-        Vehicle vehicle = Vehicle.builder()
-                .id(id)
+        Vehicle vehicle = createBaseVehicleBuilder()
                 .position(position)
                 .build();
 
         VehicleDTO dto = mapper.toDto(vehicle);
 
         assertNotNull(dto);
-        assertEquals(id, dto.id());
-        assertEquals(lat, dto.latitude(), 0.0001, "A szélességi foknak egyeznie kell");
-        assertEquals(lon, dto.longitude(), 0.0001, "A hosszúsági foknak egyeznie kell");
+        assertEquals(vehicle.getId(), dto.id());
+        assertEquals(lat, dto.latitude(), 0.0001);
+        assertEquals(lon, dto.longitude(), 0.0001);
     }
 
     @Test
-    void shouldHandleNullPosition() {
-        Vehicle vehicle = Vehicle.builder()
-                .id(UUID.randomUUID())
+    void toDto_WhenEntityIsNull_ReturnsNull() {
+        assertNull(mapper.toDto(null));
+    }
+
+    @Test
+    void toDto_WhenPositionIsNull_SetsCoordinatesToNull() {
+        Vehicle vehicle = createBaseVehicleBuilder()
                 .position(null)
                 .build();
 
@@ -51,5 +52,10 @@ class VehicleMapperTest {
         assertNotNull(dto);
         assertNull(dto.latitude());
         assertNull(dto.longitude());
+    }
+
+    private Vehicle.VehicleBuilder createBaseVehicleBuilder() {
+        return Vehicle.builder()
+                .id(UUID.randomUUID());
     }
 }
