@@ -1,6 +1,7 @@
 package hu.fleetpulse.backend.service.implementation;
 
 import hu.fleetpulse.backend.dto.request.CreateNotificationRequest;
+import hu.fleetpulse.backend.event.NotificationCreatedEvent;
 import hu.fleetpulse.backend.exception.VehicleNotFoundException;
 import hu.fleetpulse.backend.model.entity.Notification;
 import hu.fleetpulse.backend.repository.NotificationRepository;
@@ -8,6 +9,7 @@ import hu.fleetpulse.backend.service.NotificationService;
 import hu.fleetpulse.backend.service.VehicleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ public class NotificationServiceImpl implements NotificationService {
 
     private final NotificationRepository repository;
     private final VehicleService vehicleService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional
@@ -39,6 +42,8 @@ public class NotificationServiceImpl implements NotificationService {
 
         repository.save(note);
         log.info("Notification successfully saved for vehicle: {}", request.vehicleId());
+
+        eventPublisher.publishEvent(new NotificationCreatedEvent(note.getVehicleId(),note.getMessage(),note.getTimestamp().toString()));
     }
 
     @Override
