@@ -34,7 +34,14 @@ WEB_SOCKET_URL=WebSocket server URL (e.g., ws://localhost:8080/ws-fleet)
 ```
 
 ## Getting Started
-1. Start the Backend
+
+1. Start the Database
+Before starting the backend, launch the PostgreSQL database using Docker Compose from the project root directory:
+
+```
+docker-compose up -d
+```
+2. Start the Backend 
 Navigate to the backend/ directory and run:
 
 ```
@@ -42,7 +49,7 @@ cd backend
 ./gradlew bootRun
 ```
 
-2. Start the Frontend
+3. Start the Frontend
 Navigate to the frontend/fleet-client/ directory and run:
 
 ```
