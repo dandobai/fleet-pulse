@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import FleetMapView from '../views/FleetMapView.vue';
+import FleetMapView from '../views/TheMapView.vue';
 
 const router = createRouter({
   history: createWebHistory(),

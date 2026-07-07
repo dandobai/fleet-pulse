@@ -1,5 +1,4 @@
-window.global = window;
-
+import './style.css';
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import 'leaflet/dist/leaflet.css'
