@@ -8,5 +8,5 @@ import java.util.UUID;
 
 public interface PositionHistoryService {
     void create(UUID vehicleId, Double latitude, Double longitude);
-    List<PositionHistory> findAllByVehicleId(UUID vehicleId);
+    List<PositionHistory> findByVehicleId(UUID vehicleId);
 }
