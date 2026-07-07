@@ -33,7 +33,7 @@ class PositionHistoryControllerTest {
     @Test
     void findAllByVehicleId_WhenValidId_Returns200() throws Exception {
         UUID id = UUID.randomUUID();
-        when(service.findAllByVehicleId(id)).thenReturn(Collections.emptyList());
+        when(service.findByVehicleId(id)).thenReturn(Collections.emptyList());
 
         mockMvc.perform(get("/api/v1/history/{vehicleId}", id)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -43,7 +43,7 @@ class PositionHistoryControllerTest {
     @Test
     void findAllByVehicleId_WhenVehicleNotFound_Returns404() throws Exception {
         UUID id = UUID.randomUUID();
-        when(service.findAllByVehicleId(id)).thenThrow(new VehicleNotFoundException("Not found"));
+        when(service.findByVehicleId(id)).thenThrow(new VehicleNotFoundException("Not found"));
 
         mockMvc.perform(get("/api/v1/history/{vehicleId}", id))
                 .andExpect(status().isNotFound());
