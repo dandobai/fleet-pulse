@@ -1,6 +1,7 @@
 package hu.fleetpulse.backend.service.implementation;
 
 import hu.fleetpulse.backend.dto.websocket.WebSocketPayload;
+import hu.fleetpulse.backend.event.NotificationCreatedEvent;
 import hu.fleetpulse.backend.event.VehicleMovedEvent;
 import hu.fleetpulse.backend.service.WebSocketService;
 import hu.fleetpulse.backend.validator.GeoValidator;
@@ -20,12 +21,19 @@ public class WebSocketServiceImpl implements WebSocketService {
     @Override
     public void broadcastMovement(VehicleMovedEvent event) {
         Objects.requireNonNull(event.vehicleId(), "Vehicle ID cannot be null");
-        geoValidator.validate(event.latitude(),event.longitude());
+        geoValidator.validate(event.latitude(), event.longitude());
 
-        var liveMessage = new WebSocketPayload("LIVE_UPDATE", event);
+        var liveMessage = new WebSocketPayload("VEHICLE_UPDATE", event);
+
         messagingTemplate.convertAndSend("/topic/vehicles/", liveMessage);
+    }
 
-        var historyMessage = new WebSocketPayload("HISTORY_UPDATE", event);
-        messagingTemplate.convertAndSend("/topic/history/" + event.vehicleId(), historyMessage);
+    @Override
+    public void broadcastNotification(NotificationCreatedEvent event) {
+        Objects.requireNonNull(event.vehicleId(), "Vehicle ID cannot be null");
+
+        var notificationMessage = new WebSocketPayload("NOTIFICATION_UPDATE", event);
+
+        messagingTemplate.convertAndSend("/topic/notification/", notificationMessage);
     }
 }
