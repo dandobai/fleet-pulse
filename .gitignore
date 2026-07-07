@@ -29,3 +29,4 @@ frontend/.vite/
 # --- Docker & Remainings ---
 docker-compose.override.yml
 .env
+gradle.properties
