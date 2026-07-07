@@ -14,17 +14,14 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Slf4j
 public class VehicleEventListener {
 
-    private final PositionHistoryService positionHistoryService;
     private final WebSocketService webSocketService;
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     public void handleVehicleMovedEvent(VehicleMovedEvent event) {
-        log.debug("Processing movement for vehicle: {}", event.vehicleId());
-
-        positionHistoryService.create(event.vehicleId(),event.latitude(),event.longitude());
+        log.debug("Broadcasting movement for vehicle: {} via WebSocket", event.vehicleId());
 
         webSocketService.broadcastMovement(event);
 
-        log.info("Successfully processed movement for vehicle: {}", event.vehicleId());
+        log.debug("Notification successfully broadcasted for vehicle: {}", event.vehicleId());
     }
 }
