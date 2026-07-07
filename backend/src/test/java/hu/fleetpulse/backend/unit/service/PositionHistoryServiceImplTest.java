@@ -29,9 +29,6 @@ class PositionHistoryServiceImplTest {
     private PositionConverter positionConverter;
 
     @Mock
-    private VehicleService vehicleService;
-
-    @Mock
     private GeoValidator geoValidator;
 
     @InjectMocks
@@ -59,24 +56,11 @@ class PositionHistoryServiceImplTest {
         );
 
         verify(repository, never()).save(any());
-        verify(vehicleService, never()).existsById(any());
-    }
-
-    @Test
-    void create_WhenVehicleDoesNotExist_ThenThrowVehicleNotFoundException() {
-        UUID id = UUID.randomUUID();
-        when(vehicleService.existsById(id)).thenReturn(false);
-
-        assertThrows(VehicleNotFoundException.class, () ->
-                positionHistoryService.create(id, 47.0, 19.0));
-
-        verify(repository, never()).save(any());
     }
 
     @Test
     void create_WhenValidData_ThenSaveHistory() {
         UUID id = UUID.randomUUID();
-        when(vehicleService.existsById(id)).thenReturn(true);
 
         positionHistoryService.create(id, 47.0, 19.0);
 
@@ -87,29 +71,19 @@ class PositionHistoryServiceImplTest {
     @Test
     void findAllByVehicleId_WhenIdIsNull_ThenThrowNullPointerException() {
         assertThrows(NullPointerException.class, () ->
-                positionHistoryService.findAllByVehicleId(null));
+                positionHistoryService.findByVehicleId(null));
 
         verifyNoInteractions(repository);
     }
 
     @Test
-    void findAllByVehicleId_WhenVehicleNotFound_ThenThrowException() {
-        UUID id = UUID.randomUUID();
-        when(vehicleService.existsById(id)).thenReturn(false);
-
-        assertThrows(VehicleNotFoundException.class, () ->
-                positionHistoryService.findAllByVehicleId(id));
-    }
-
-    @Test
     void findAllByVehicleId_WhenValidId_ThenReturnList() {
         UUID id = UUID.randomUUID();
-        when(vehicleService.existsById(id)).thenReturn(true);
-        when(repository.findAllByVehicleId(id)).thenReturn(List.of(new PositionHistory()));
+        when(repository.findByVehicleId(id)).thenReturn(List.of(new PositionHistory()));
 
-        List<PositionHistory> result = positionHistoryService.findAllByVehicleId(id);
+        List<PositionHistory> result = positionHistoryService.findByVehicleId(id);
 
         assertFalse(result.isEmpty());
-        verify(repository, times(1)).findAllByVehicleId(id);
+        verify(repository, times(1)).findByVehicleId(id);
     }
 }

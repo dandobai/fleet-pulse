@@ -25,7 +25,6 @@ public class PositionHistoryServiceImpl implements PositionHistoryService {
 
     private final PositionHistoryRepository repository;
     private final PositionConverter positionConverter;
-    private final VehicleService vehicleService;
     private final GeoValidator geoValidator;
 
     @Override
@@ -35,16 +34,13 @@ public class PositionHistoryServiceImpl implements PositionHistoryService {
 
         geoValidator.validate(latitude, longitude);
 
-        validateVehicleExists(vehicleId);
-
         log.debug("Creating position history for vehicle: {} at coordinates [{}, {}]",
                 vehicleId, latitude, longitude);
 
-        PositionHistory history = PositionHistory.builder()
-                .vehicleId(vehicleId)
-                .position(positionConverter.toPoint(new GeoLocation(latitude, longitude)))
-                .timestamp(LocalDateTime.now())
-                .build();
+        PositionHistory history = new PositionHistory();
+        history.setVehicleId(vehicleId);
+        history.setPosition(positionConverter.toPoint(new GeoLocation(latitude, longitude)));
+        history.setTimestamp(LocalDateTime.now());
 
         repository.save(history);
         log.info("Successfully recorded position history for vehicle: {}", vehicleId);
@@ -52,18 +48,8 @@ public class PositionHistoryServiceImpl implements PositionHistoryService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<PositionHistory> findAllByVehicleId(UUID vehicleId) {
+    public List<PositionHistory> findByVehicleId(UUID vehicleId) {
         Objects.requireNonNull(vehicleId, "Vehicle ID cannot be null");
-
-        validateVehicleExists(vehicleId);
-
-        return repository.findAllByVehicleId(vehicleId);
+        return repository.findByVehicleId(vehicleId);
     }
-
-    private void validateVehicleExists(UUID vehicleId) {
-        if (!vehicleService.existsById(vehicleId)) {
-            throw new VehicleNotFoundException("Cannot process position history: Vehicle not found with ID: " + vehicleId);
-        }
-    }
-
 }
