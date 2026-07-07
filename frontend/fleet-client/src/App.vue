@@ -6,5 +6,9 @@ useFleetSocket();
 </script>
 
 <template>
-  <RouterView />
+  <div class="h-screen w-screen flex flex-col bg-black overflow-hidden">
+    <main class="flex-1 overflow-hidden">
+      <RouterView />
+    </main>
+  </div>
 </template>
