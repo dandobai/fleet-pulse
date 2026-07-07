@@ -1,0 +1,92 @@
+@import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
+
+main {
+  will-change: contents;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap');
+
+body {
+  font-family: 'Fira Code', monospace;
+  background-color: #000;
+  color: #00ff41;
+}
+
+.neon-border {
+  border: 1px solid #00ff41;
+  box-shadow: 0 0 5px #00ff41, inset 0 0 5px #00ff41;
+}
+
+#map {
+  background-color: black;
+}
+
+.leaflet-container {
+  background: #000 !important;
+}
+
+.leaflet-tile {
+  filter: grayscale(100%) brightness(0.5) sepia(100%) hue-rotate(60deg) saturate(500%);
+}
+
+.leaflet-control-zoom {
+  border: 1px solid #00ff41 !important;
+  box-shadow: 0 0 5px #00ff41 !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: black !important;
+  color: #00ff41 !important;
+  border-bottom: 1px solid #00ff41 !important;
+  border-radius: 0 !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: #00ff41 !important;
+  color: black !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #000;
+}
+
+.custom-green-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #00ff41;
+  border-radius: 0;
+}
+
+.custom-green-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #008f11;
+}
+
+.custom-yellow-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #ca8a04;
+  border-radius: 0;
+}
+
+.custom-yellow-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #a16207;
+}
+
+.leaflet-control-attribution {
+  display: none !important;
+}
+
+.matrix-pin {
+  width: 12px;
+  height: 12px;
+  background-color: #00ff41;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #00ff41;
+  border: 1px solid #000;
+}
+
+.matrix-marker {
+  background: none !important;
+  border: none !important;
+}
