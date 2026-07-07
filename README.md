@@ -1,6 +1,6 @@
-# FleetPulse
+# fleet-pulse
 
-**FleetPulse** – A high-performance, real-time fleet tracking system designed for seamless vehicle monitoring and interactive map visualization.
+**fleet-pulse** – A high-performance, real-time fleet tracking system designed for seamless vehicle monitoring and interactive map visualization.
 
 ---
 
