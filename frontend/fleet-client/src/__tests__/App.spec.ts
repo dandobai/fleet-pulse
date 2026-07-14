@@ -17,6 +17,10 @@ vi.mock('leaflet', () => ({
   },
 }))
 
+vi.mock('@/composables/useFleetSocket', () => ({
+  useFleetSocket: vi.fn(), 
+}))
+
 describe('App', () => {
   it('mounts the app container correctly', async () => {
     router.push('/')
