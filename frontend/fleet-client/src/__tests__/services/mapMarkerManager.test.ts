@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { MapMarkerManager } from '../../services/MapMarkerManager';
+import { MapMarkerManager } from '../../services/mapMarkerManager';
 import L from 'leaflet';
 
 vi.mock('leaflet', () => {
