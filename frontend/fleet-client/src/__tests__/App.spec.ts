@@ -4,7 +4,6 @@ import { createPinia } from 'pinia'
 import router from '../router/index.ts'
 import App from '../App.vue'
 
-// 1. Mockold a Leaflet-et a tesztfájl elején
 vi.mock('leaflet', () => ({
   default: {
     map: vi.fn(() => ({
@@ -26,8 +25,6 @@ describe('App', () => {
     const wrapper = mount(App, {
       global: {
         plugins: [createPinia(), router],
-        // 2. Ha a MapContainer-ben van globális komponens használat, 
-        // azt itt is ki kell zárni (stubs):
         stubs: {
           MapContainer: true 
         }
