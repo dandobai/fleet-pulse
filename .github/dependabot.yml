@@ -4,10 +4,12 @@ updates:
     directory: "/frontend/fleet-client"
     schedule:
       interval: "weekly"
+    target-branch: "develop"
     open-pull-requests-limit: 10
 
   - package-ecosystem: "gradle"
     directory: "/backend"
     schedule:
       interval: "weekly"
+    target-branch: "develop"  
     open-pull-requests-limit: 10
