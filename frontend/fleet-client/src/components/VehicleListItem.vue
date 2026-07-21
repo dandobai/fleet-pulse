@@ -39,8 +39,8 @@
     <div v-if="isHistoryActive" @click.stop
          class="mt-2 p-2 bg-yellow-950/20 border border-yellow-900/30 text-[9px] text-yellow-500">
       <div v-if="historyStore.loading.get(vehicle.id)">Loading history...</div>
-      <div v-else class="custom-scrollbar custom-yellow-scrollbar max-h-32 overflow-y-auto">
-        <div v-for="(point, index) in historyData" :key="index"
+      <div v-else class="custom-scrollbar custom-yellow-scrollbar max-h-32 overflow-y-auto" @scroll="handleHistoryScroll">
+        <div v-for="(point, index) in visibleHistory" :key="index"
              class="flex justify-between border-b border-yellow-900/20 py-0.5">
           <span>{{ formatTime(point.timestamp) }}</span>
           <span>{{ point.lat.toFixed(4) }}, {{ point.lng.toFixed(4) }}</span>
@@ -51,9 +51,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, toRef } from 'vue';
 import { usePositionHistoryStore } from '@/stores/positionHistoryStore';
 import { PositionHistoryService } from '@/services/positionHistoryService';
+import { usePaginationScroll } from '@/composables/usePaginationScroll';
 
 const props = defineProps<{
   vehicle: any,
@@ -67,7 +68,10 @@ const historyStore = usePositionHistoryStore();
 const isDetailsVisible = ref(false);
 
 const isHistoryActive = computed(() => historyStore.isHistoryActive(props.vehicle.id));
-const historyData = computed(() => historyStore.getHistories(props.vehicle.id) || []);
+const rawHistoryData = computed(() => historyStore.getHistories(props.vehicle.id) || []);
+
+const historyRef = toRef(rawHistoryData);
+const { visibleItems: visibleHistory, handleScroll: handleHistoryScroll } = usePaginationScroll(historyRef, 30, 30);
 
 const isSelected = computed(() => props.selectedVehicles.has(props.vehicle.id));
 const isShowing = computed(() => props.selectedVehicles.size === 0 || isSelected.value);
