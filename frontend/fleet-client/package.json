@@ -36,7 +36,7 @@
     "@types/sockjs-client": "^1.5.4",
     "@types/stompjs": "^2.3.10",
     "@typescript-eslint/eslint-plugin": "^8.64.0",
-    "@typescript-eslint/parser": "^8.64.0",
+    "@typescript-eslint/parser": "^8.65.0",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitejs/plugin-vue-jsx": "^5.1.5",
     "@vitest/eslint-plugin": "^1.6.23",
