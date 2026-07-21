@@ -53,7 +53,7 @@
     "jsdom": "^29.1.1",
     "npm-run-all2": "^9.0.2",
     "oxlint": "1.73.0",
-    "postcss": "^8.5.19",
+    "postcss": "^8.5.20",
     "prettier": "3.9.5",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
