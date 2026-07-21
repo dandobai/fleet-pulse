@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@stomp/stompjs": "^7.3.0",
-    "@tailwindcss/postcss": "^4.3.2",
+    "@tailwindcss/postcss": "^4.3.3",
     "@tailwindcss/vite": "^4.3.2",
     "axios": "^1.18.1",
     "leaflet": "^1.9.4",
